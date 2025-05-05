@@ -78,6 +78,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-comments-alt text-warning"></i> Healthcare Forum
+                                        </h5>
+                                        <p class="card-text">Diskusi dan berbagi pengalaman dengan sesama pasien</p>
+                                        <a href="{{ route('forum.index') }}" class="btn btn-warning text-white">
+                                            Masuk Forum
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

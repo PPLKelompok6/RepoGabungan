@@ -190,4 +190,94 @@
         </div>
     </div>
 </div>
+<div class="row mt-4">
+    <!-- Card Total Artikel -->
+    <div class="col-md-3 mb-4">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white">Total Artikel</h6>
+                        <h2 class="mb-0">{{ $totalArticles }}</h2>
+                    </div>
+                    <div>
+                        <i class="fas fa-newspaper fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <a href="{{ route('admin.articles.index') }}" class="text-white text-decoration-none">
+                    Lihat Detail
+                </a>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions untuk Artikel -->
+    <div class="col-md-9 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Kelola Artikel</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="{{ route('admin.articles.create') }}" class="btn btn-primary btn-block mb-3 w-100">
+                            <i class="fas fa-plus-circle me-2"></i>Tambah Artikel Baru
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ route('admin.articles.index') }}" class="btn btn-info btn-block mb-3 w-100">
+                            <i class="fas fa-list me-2"></i>Daftar Artikel
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ route('home') }}#articles" class="btn btn-success btn-block mb-3 w-100">
+                            <i class="fas fa-eye me-2"></i>Lihat di Frontend
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tabel Artikel Terbaru -->
+                <div class="table-responsive mt-4">
+                    <h6>Artikel Terbaru</h6>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Judul</th>
+                                <th>Tanggal Dibuat</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($latestArticles as $article)
+                            <tr>
+                                <td>{{ Str::limit($article->title, 50) }}</td>
+                                <td>{{ $article->created_at->format('d M Y') }}</td>
+                                <td>
+                                    <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.articles.destroy', $article) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus artikel ini?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center">Belum ada artikel</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

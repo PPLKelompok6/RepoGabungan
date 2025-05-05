@@ -12,10 +12,14 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArticleController;
+
+
 
 // Home
 Route::get('/', function () {
-    return view('dashboard');
+    $articles = \App\Models\Article::latest()->paginate(10);
+    return view('dashboard', compact('articles'));
 })->name('home');
 
 // Routes for Authentication
@@ -49,6 +53,17 @@ Route::middleware(['auth'])->group(function () {
                 'update' => 'admin.health-reminder.update',
                 'destroy' => 'admin.health-reminder.destroy'
             ]
+        ]);
+
+        // Article Routes
+        Route::resource('admin/articles', ArticleController::class)->names([
+            'index' => 'admin.articles.index',
+            'create' => 'admin.articles.create',
+            'store' => 'admin.articles.store',
+            'edit' => 'admin.articles.edit',
+            'update' => 'admin.articles.update',
+            'destroy' => 'admin.articles.destroy',
+            'show' => 'admin.articles.show'
         ]);
     });
 
@@ -84,3 +99,36 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/health-assessment/calculate', [HealthAssessmentController::class, 'calculate'])->name('health-assessment.calculate');
     Route::get('/health-assessments', [HealthAssessmentController::class, 'index'])->name('health-assessments.index');
 }); // Closing bracket for middleware auth group
+
+// Routes untuk admin
+// Hapus atau pindahkan route artikel yang duplikat ini
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::resource('admin/articles', Admin\ArticleController::class)->names('admin.articles');
+// });
+
+// Perbaiki route untuk menampilkan artikel di frontend
+Route::get('/', function () {
+    try {
+        $articles = \App\Models\Article::latest()->paginate(6);
+        return view('dashboard', compact('articles'));
+    } catch (\Exception $e) {
+        $articles = collect([]);
+        return view('dashboard', compact('articles'));
+    }
+})->name('home');
+
+Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
+
+// Forum Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::get('/forum/{post}', [ForumController::class, 'show'])->name('forum.show');
+    Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
+    Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
+});
+
+// Hapus duplikasi route berikut karena sudah ada di dalam middleware auth group
+Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
+Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
