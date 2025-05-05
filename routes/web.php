@@ -98,6 +98,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
     Route::post('/health-assessment/calculate', [HealthAssessmentController::class, 'calculate'])->name('health-assessment.calculate');
     Route::get('/health-assessments', [HealthAssessmentController::class, 'index'])->name('health-assessments.index');
+    Route::patch('/appointments/{appointment}/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
 }); // Closing bracket for middleware auth group
 
 // Routes untuk admin
