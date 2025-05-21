@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\MentalHealthTest;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,10 @@ class User extends Authenticatable
     public function isDoctor()
     {
         return $this->role === 'doctor';
+    }
+
+    public function mentalHealthTests()
+    {
+        return $this->hasMany(MentalHealthTest::class);
     }
 }

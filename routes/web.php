@@ -8,10 +8,18 @@ use App\Http\Controllers\Doctor\DoctorScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\Admin\HealthReminderController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\HealthAssessmentController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArticleController;
+
+
 
 // Home
 Route::get('/', function () {
-    return view('dashboard');
+    $articles = \App\Models\Article::latest()->paginate(10);
+    return view('dashboard', compact('articles'));
 })->name('home');
 
 // Routes for Authentication
@@ -24,21 +32,39 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
 
+    // Chat Routes
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::get('/chat/messages/{userId}', [ChatController::class, 'getMessages'])->name('chat.messages');
+
     // Admin Routes
     Route::middleware('role:admin')->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
-
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/admin/health-assessments', [AdminController::class, 'healthAssessments'])
+            ->name('admin.health-assessments.index');
+            
         // Health Reminder Routes
-        Route::resource('health-reminder', HealthReminderController::class, [
-            'as' => 'admin',
-            'prefix' => 'admin'
+        Route::resource('admin/health-reminder', HealthReminderController::class, [
+            'names' => [
+                'index' => 'admin.health-reminder.index',
+                'create' => 'admin.health-reminder.create',
+                'store' => 'admin.health-reminder.store',
+                'edit' => 'admin.health-reminder.edit',
+                'update' => 'admin.health-reminder.update',
+                'destroy' => 'admin.health-reminder.destroy'
+            ]
         ]);
 
-        // Appointment Status Update
-        Route::patch('/appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])
-            ->name('appointments.update-status');
+        // Article Routes
+        Route::resource('admin/articles', ArticleController::class)->names([
+            'index' => 'admin.articles.index',
+            'create' => 'admin.articles.create',
+            'store' => 'admin.articles.store',
+            'edit' => 'admin.articles.edit',
+            'update' => 'admin.articles.update',
+            'destroy' => 'admin.articles.destroy',
+            'show' => 'admin.articles.show'
+        ]);
     });
 
     // Patient (User) Routes
@@ -70,4 +96,37 @@ Route::middleware(['auth'])->group(function () {
     // Common Appointment Routes (semua user yang login)
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
+    Route::post('/health-assessment/calculate', [HealthAssessmentController::class, 'calculate'])->name('health-assessment.calculate');
+    Route::get('/health-assessments', [HealthAssessmentController::class, 'index'])->name('health-assessments.index');
+    Route::patch('/appointments/{appointment}/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
+}); // Closing bracket for middleware auth group
+
+// Routes untuk admin
+// Hapus atau pindahkan route artikel yang duplikat ini
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::resource('admin/articles', Admin\ArticleController::class)->names('admin.articles');
+// });
+
+// Perbaiki route untuk menampilkan artikel di frontend
+Route::get('/', function () {
+    try {
+        $articles = \App\Models\Article::latest()->paginate(6);
+        return view('dashboard', compact('articles'));
+    } catch (\Exception $e) {
+        $articles = collect([]);
+        return view('dashboard', compact('articles'));
+    }
+})->name('home');
+
+Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
+
+// Forum Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::get('/forum/{post}', [ForumController::class, 'show'])->name('forum.show');
+    Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
+    Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
 });
+
