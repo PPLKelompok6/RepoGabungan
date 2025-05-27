@@ -18,7 +18,7 @@ class DoctorScheduleController extends Controller
     public function create()
     {
         // Menampilkan form untuk menambah jadwal
-        return view('doctor.schedule_create');
+        return view('doctor.schedule.create');
     }
 
     public function store(Request $request)

@@ -91,6 +91,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-notes-medical text-info"></i> Rekam Medis
+                                        </h5>
+                                        <p class="card-text">Lihat riwayat rekam medis Anda yang diinput oleh dokter.</p>
+                                        <a href="{{ route('medical-records.index') }}" class="btn btn-info text-white">
+                                            Lihat Rekam Medis
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

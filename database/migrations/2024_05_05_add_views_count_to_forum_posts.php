@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('forum_posts', function (Blueprint $table) {
-            $table->integer('views_count')->default(0)->after('status');
+            $table->integer('views_count')->default(0);
         });
     }
 
@@ -17,6 +17,6 @@ return new class extends Migration
     {
         Schema::table('forum_posts', function (Blueprint $table) {
             $table->dropColumn('views_count');
-        });
-    }
+    });
+}
 };

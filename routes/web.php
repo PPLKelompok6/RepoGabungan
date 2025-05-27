@@ -13,6 +13,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\MedicalRecordController;
 
 
 
@@ -98,6 +99,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
     Route::post('/health-assessment/calculate', [HealthAssessmentController::class, 'calculate'])->name('health-assessment.calculate');
     Route::get('/health-assessments', [HealthAssessmentController::class, 'index'])->name('health-assessments.index');
+    Route::patch('/appointments/{appointment}/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
+
+    // Medical Records Routes
+    Route::get('/medical-records', [MedicalRecordController::class, 'index'])->name('medical-records.index');
+    Route::get('/medical-records/create', [MedicalRecordController::class, 'create'])->name('medical-records.create');
+    Route::post('/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
+    Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
+    Route::get('/medical-records/select-patient', [MedicalRecordController::class, 'selectPatient'])->name('medical-records.select-patient');
 }); // Closing bracket for middleware auth group
 
 // Routes untuk admin

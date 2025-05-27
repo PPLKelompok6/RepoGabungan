@@ -56,6 +56,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-notes-medical text-info"></i> Rekam Medis Pasien
+                            </h5>
+                            <p class="card-text">Lihat dan tambahkan rekam medis pasien Anda.</p>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('medical-records.create') }}" class="btn btn-info text-white">Tambah Rekam Medis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

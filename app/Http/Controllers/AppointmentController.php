@@ -69,21 +69,17 @@ class AppointmentController extends Controller
         return view('appointments.show', compact('appointment'));
     }
 
-    public function updateStatus(Request $request, Appointment $appointment)
+    public function updateStatus(Appointment $appointment, Request $request)
     {
-        $validated = $request->validate([
-            'status' => 'required|in:confirmed,completed,cancelled'
+        $validatedData = $request->validate([
+            'status' => 'required|in:pending,confirmed,completed,cancelled'
         ]);
 
-        $appointment->update(['status' => $validated['status']]);
+        $appointment->update([
+            'status' => $validatedData['status']
+        ]);
 
-        if ($validated['status'] === 'confirmed') {
-            // Kirim notifikasi ke pasien
-            $this->notifyPatient($appointment);
-        }
-
-        return redirect()->back()
-            ->with('success', 'Status janji temu berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status janji temu berhasil diperbarui');
     }
 
     private function notifyPatient(Appointment $appointment)
