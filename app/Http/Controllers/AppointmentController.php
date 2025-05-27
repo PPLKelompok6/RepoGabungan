@@ -26,7 +26,9 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        $doctors = User::where('role', 'doctor')->get();
+        $doctors = User::where('role', 'doctor')
+            ->with('schedules')
+            ->get();
         return view('appointments.create', compact('doctors'));
     }
 

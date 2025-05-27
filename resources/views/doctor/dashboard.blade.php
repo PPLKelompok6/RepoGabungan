@@ -10,7 +10,18 @@
             <h4>Selamat Datang, Dr. {{ Auth::user()->name }}!</h4>
             
             <div class="row mt-4">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-user-md text-primary"></i> Edit Profil
+                            </h5>
+                            <p class="card-text">Update informasi profil Anda</p>
+                            <a href="{{ route('doctor.profile.edit') }}" class="btn btn-primary">Edit Profil</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -21,20 +32,7 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="fas fa-plus-circle text-success"></i> Tambah Jadwal
-                            </h5>
-                            <p class="card-text">Tambah jadwal praktek baru</p>
-                            <a href="{{ route('doctor.schedule.create') }}" class="btn btn-success">Tambah Jadwal</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -45,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">

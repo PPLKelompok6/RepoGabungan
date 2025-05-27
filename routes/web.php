@@ -133,3 +133,9 @@ Route::middleware(['auth'])->group(function () {
 // Hapus duplikasi route berikut karena sudah ada di dalam middleware auth group
 Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
 Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
+
+// Doctor Profile Routes
+Route::middleware(['auth', 'role:doctor'])->group(function () {
+    Route::get('/doctor/profile/edit', [App\Http\Controllers\Doctor\ProfileController::class, 'edit'])->name('doctor.profile.edit');
+    Route::put('/doctor/profile/update', [App\Http\Controllers\Doctor\ProfileController::class, 'update'])->name('doctor.profile.update');
+});
