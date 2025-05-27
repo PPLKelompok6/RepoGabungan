@@ -14,6 +14,7 @@ use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\MedicalRecordController;
+use App\Http\Controllers\FeedbackController;
 
 
 
@@ -141,3 +142,6 @@ Route::middleware(['auth'])->group(function () {
 // Hapus duplikasi route berikut karena sudah ada di dalam middleware auth group
 Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
 Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
+
+//Route Feedback
+Route::resource('feedback', FeedbackController::class);

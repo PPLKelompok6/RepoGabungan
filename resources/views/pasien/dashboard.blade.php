@@ -91,6 +91,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- New Feedback Button -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-star text-secondary"></i> Feedback dan Rating
+                                        </h5>
+                                        <p class="card-text">Berikan feedback dan rating untuk layanan yang Anda gunakan</p>
+                                        <a href="{{ route('feedback.index') }}" class="btn btn-secondary text-white">
+                                            Berikan Feedback
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
