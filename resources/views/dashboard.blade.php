@@ -74,7 +74,7 @@
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Book Appointment</a>
                     @endauth
-                    <a href="tel:08111 1500 115" class="btn btn-outline-primary btn-lg">
+                    <a href="tel:+628111500115" class="btn btn-outline-primary btn-lg">
                         <i class="fas fa-phone-alt me-2"></i>08111 1500 115
                     </a>
                 </div>
@@ -193,6 +193,419 @@
         </div>
     </div>
 </div>
+
+<!-- Mental Health Section -->
+<div class="mental-health-section py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Yuk, Mulai Perjalanan Kesehatan Mental Kamu Bersama MedFast!</h2>
+                <p class="lead mb-4">Kamu tidak harus menghadapi semuanya sendiri. Kami hadir untuk memberikan layanan konseling online dengan psikolog profesional dan berlisensi.</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ route('chat.index') }}" class="btn btn-primary">Konsultasi Sekarang</a>
+                    <a href="{{ route('mental-health.questions', ['type' => 'burnout']) }}" class="btn btn-outline-success">Tes Gratis</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ asset('images/mental-health/online-test.svg') }}" alt="Mental Health Consultation" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mental Health Test Categories Section -->
+<div id="mental-health-test" class="mental-health-test-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-4" style="color: #42A5F5;">Apa Yang Sedang Kamu Rasakan?</h2>
+        <p class="text-center mb-5">Yuk, pilih perasaan yang sedang kamu hadapi dan temukan bantuan yang kamu butuhkan sekarang!</p>
+        
+        <div class="row g-4 justify-content-center">
+            <!-- Card Depresi -->
+            <div class="col-md-3 col-6">
+                <a href="{{ route('mental-health.test', ['type' => 'depresi']) }}" class="text-decoration-none">
+                    <div class="condition-card text-center" data-condition="depresi">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/mental-health/depresi.svg') }}" alt="Depresi" class="condition-icon">
+                        </div>
+                        <h5 class="category-title">Depresi</h5>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card Kecemasan -->
+            <div class="col-md-3 col-6">
+                <a href="{{ route('mental-health.test', ['type' => 'kecemasan']) }}" class="text-decoration-none">
+                    <div class="condition-card text-center" data-condition="kecemasan">
+                        <img src="{{ asset('images/mental-health/kecemasan.svg') }}" alt="Kecemasan" class="condition-icon">
+                        <h5 class="category-title">Kecemasan</h5>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card Stres -->
+            <div class="col-md-3 col-6">
+                <a href="{{ route('mental-health.test', ['type' => 'stres']) }}" class="text-decoration-none">
+                    <div class="condition-card text-center" data-condition="stres">
+                        <img src="{{ asset('images/mental-health/stres.svg') }}" alt="Stres" class="condition-icon">
+                        <h5 class="category-title">Stres</h5>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card Burnout -->
+            <div class="col-md-3 col-6">
+                <a href="{{ route('mental-health.test', ['type' => 'burnout']) }}" class="text-decoration-none">
+                    <div class="condition-card text-center" data-condition="burnout">
+                        <img src="{{ asset('images/mental-health/burnout.svg') }}" alt="Burnout" class="condition-icon">
+                        <h5 class="category-title">Burnout</h5>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card Trauma -->
+            <div class="col-md-3 col-6">
+                <a href="{{ route('mental-health.test', ['type' => 'trauma']) }}" class="text-decoration-none">
+                    <div class="condition-card text-center" data-condition="trauma">
+                        <img src="{{ asset('images/mental-health/trauma.svg') }}" alt="Trauma" class="condition-icon">
+                        <h5 class="category-title">Trauma</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="condition-card text-center" data-condition="relationship">
+                    <img src="{{ asset('images/mental-health/keluarga.svg') }}" alt="Kesulitan dalam hubungan" class="condition-icon">
+                    <h5 class="category-title">Kesulitan dalam hubungan</h5>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="condition-card text-center" data-condition="mood">
+                    <img src="{{ asset('images/mental-health/mood.png') }}" alt="Gangguan Mood" class="condition-icon">
+                    <h5 class="category-title">Gangguan Mood</h5>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="condition-card text-center" data-condition="kecanduan">
+                    <img src="{{ asset('images/mental-health/kecanduan.svg') }}" alt="Kecanduan" class="condition-icon">
+                    <h5 class="category-title">Kecanduan</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deskripsi Kondisi -->
+        <div class="condition-description mt-5" id="condition-details">
+            <div class="description-content p-4">
+                <h4 class="mb-3">Depresi: Lebih dari Sekadar Sedih Biasa</h4>
+                <p>Depresi adalah gangguan kesehatan mental yang umum dan serius yang ditandai dengan suasana hati yang rendah, kehilangan minat atau kesenangan, dan berbagai gejala fisik dan mental lainnya. Meskipun kesedihan adalah emosi yang normal, depresi berbeda karena intensitas dan durasinya yang lebih besar, serta dampaknya yang signifikan pada kehidupan sehari-hari.</p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{{ route('mental-health.test', ['type' => 'depresi']) }}" class="btn btn-success rounded-pill">Tes Gratis</a>
+                    <a href="{{ route('appointments.create') }}" class="btn btn-outline-success rounded-pill">Cari Psikolog</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.mental-health-test-section {
+    background-color: #ffffff;
+    padding: 60px 0;
+}
+
+.condition-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 250px; /* Tinggi tetap untuk semua card */
+    border: 1px solid #E3E3E3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.condition-card:hover {
+    transform: translateY(-5px);
+    background-color: #E3F2FD;
+    border-color: #42A5F5;
+}
+
+.icon-wrapper {
+    width: 120px; /* Ukuran wrapper lebih besar */
+    height: 120px; /* Ukuran wrapper lebih besar */
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.condition-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.category-title {
+    color: #42A5F5;
+    font-weight: 500;
+    margin-top: 15px;
+}
+
+.condition-description {
+    background-color: #E3F2FD;
+    border-radius: 15px;
+    margin-top: 40px;
+}
+
+.description-content {
+    padding: 30px;
+}
+
+.btn-success {
+    background-color: #42A5F5;
+    border-color: #42A5F5;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+.btn-success:hover {
+    background-color: #1E88E5;
+    border-color: #1E88E5;
+}
+
+.btn-outline-success {
+    color: #42A5F5;
+    border-color: #42A5F5;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+.btn-outline-success:hover {
+    background-color: #42A5F5;
+    color: white;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Scroll to test section when clicking "Tes Gratis" button
+    document.querySelector('.btn-outline-success').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('mental-health-test').scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+
+    // Handle condition card clicks
+    const conditionCards = document.querySelectorAll('.condition-card');
+    const conditionDetails = document.getElementById('condition-details');
+
+    // Definisi deskripsi untuk setiap kondisi
+    const conditionDescriptions = {
+        'depresi': {
+            title: 'Depresi: Lebih dari Sekadar Sedih Biasa',
+            description: 'Depresi adalah gangguan kesehatan mental yang umum dan serius yang ditandai dengan suasana hati yang rendah, kehilangan minat atau kesenangan, dan berbagai gejala fisik dan mental lainnya. Meskipun kesedihan adalah emosi yang normal, depresi berbeda karena intensitas dan durasinya yang lebih besar, serta dampaknya yang signifikan pada kehidupan sehari-hari.'
+        },
+        'kecemasan': {
+            title: 'Kecemasan: Lebih dari Sekadar Gugup Biasa',
+            description: 'Kecemasan adalah perasaan khawatir atau takut yang intens dan menetap. Meskipun rasa cemas sesekali adalah normal, terutama dalam situasi yang penuh tekanan, kecemasan yang berlebihan dan berkepanjangan dapat mengganggu kehidupan sehari-hari.'
+        },
+        'stres': {
+            title: 'Stres: Musuh Terselubung Kesehatan Mental Kita',
+            description: 'Stres adalah reaksi alami tubuh terhadap situasi yang penuh tekanan. Ini adalah alarm internal yang memperingatkan kita bahwa ada sesuatu yang perlu dihadapi. Dalam kadar yang wajar, stres bisa memotivasi kita untuk bertindak dan mencapai tujuan. Namun, jika dibiarkan berlarut-larut dan tidak dikelola dengan baik, stres bisa menjadi musuh terselubung kesehatan mental kita.'
+        },
+        'trauma': {
+            title: 'Trauma: Luka Tak Kasat Mata yang Mempengaruhi Kesehatan Mental',
+            description: 'Trauma adalah reaksi emosional yang intens dan berkepanjangan terhadap peristiwa yang sangat menegangkan atau menakutkan. Peristiwa tersebut bisa berupa kekerasan fisik atau seksual, kecelakaan, bencana alam, perang, atau penganiayaan.'
+        },
+        'burnout': {
+            title: 'Burnout: Musuh Terselubung Kesehatan Mental Kita',
+            description: 'Burnout adalah keadaan kelelahan emosional, mental, dan fisik yang disebabkan oleh stres berkepanjangan. Ini terjadi ketika seseorang merasa terlalu tertekan dan kewalahan, dan tidak dapat lagi mengatasi tuntutan yang dihadapi. Burnout dapat berdampak negatif pada semua aspek kehidupan Anda, termasuk pekerjaan, hubungan, dan kesehatan fisik.'
+        },
+        'relationship': {
+            title: 'Terapi Keluarga dan Hubungan: Meraih Harmoni Bersama',
+            description: 'Terapi keluarga dan hubungan adalah bentuk terapi bicara yang bertujuan membantu individu, pasangan, atau keluarga mengatasi berbagai masalah hubungan. Terapis berlatih membantu para peserta untuk memahami pola komunikasi dan interaksi mereka, mengidentifikasi sumber konflik, dan mengembangkan keterampilan komunikasi dan manajemen konflik yang lebih efektif.'
+        },
+        'mood': {
+            title: 'Permainan Suasana Hati: Mengenal Gangguan Mood',
+            description: 'Gangguan mood adalah kelompok gangguan kesehatan mental yang ditandai dengan perubahan suasana hati yang ekstrem dan berlangsung lama. Gangguan ini berbeda dengan fluktuasi emosi normal yang dialami semua orang, karena intensitas, durasi, dan dampaknya yang lebih signifikan terhadap kehidupan sehari-hari.'
+        },
+        'kecanduan': {
+            title: 'Kecanduan: Memahami dan Mengatasi Ketergantungan',
+            description: 'Kecanduan atau adiksi adalah kondisi saat seseorang tidak dapat berhenti mengkonsumsi suatu zat atau melakukan sebuah kegiatan. Orang dengan kecanduan akan kehilangan kontrol terhadap perilakunya meskipun hal itu bisa merusak kehidupan rumah tangga, pekerjaan, atau hubungan pertemanannya. Segera dapatkan bantuan profesional untuk mengatasi kecanduan serta mendapatkan cara yang tepat untuk mengatasinya.'
+        }
+    };
+
+    conditionCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Hapus kelas active dari semua card
+            conditionCards.forEach(c => c.classList.remove('active'));
+            
+            // Tambahkan kelas active ke card yang diklik
+            this.classList.add('active');
+            
+            // Dapatkan kondisi dari atribut data
+            const condition = this.getAttribute('data-condition');
+            
+            // Perbarui konten deskripsi
+            const descriptionContent = conditionDetails.querySelector('.description-content');
+            descriptionContent.innerHTML = `
+                <h4 class="mb-3">${conditionDescriptions[condition].title}</h4>
+                <p>${conditionDescriptions[condition].description}</p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="#" class="btn btn-success rounded-pill">Tes Gratis</a>
+                    <a href="#" class="btn btn-outline-success rounded-pill">Cari Psikolog</a>
+                </div>
+            `;
+            
+            // Tampilkan deskripsi
+            conditionDetails.classList.remove('d-none');
+            
+            // Scroll ke deskripsi
+            conditionDetails.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        });
+    });
+});
+</script>
+
+<style>
+.mental-health-section {
+    background-color: #f8f9fa;
+    padding: 80px 0;
+}
+
+.mental-health-section h2 {
+    color: #333;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.mental-health-section .lead {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.btn-success {
+    background-color: #0047AB;
+    border-color: #0047AB;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+.btn-success:hover {
+    background-color: #0047AB;
+    border-color: #0047AB;
+}
+
+.btn-outline-success {
+    color: #0047AB;
+    border-color: #0047AB;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+.btn-outline-success:hover {
+    background-color: #0047AB;
+    color: white;
+}
+
+.img-fluid {
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+</style>
+
+<!-- Online Consultation Section -->
+<div class="consultation-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Yuk, Mulai Perjalanan Kesehatan Mental Kamu Bersama MedFast!</h2>
+                <p class="lead mb-4">Kamu tidak perlu menghadapi semuanya sendiri. MedFast hadir siap mendampingi kamu melalui layanan konsultasi online bersama dokter profesional dan berlisensi.</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ route('chat.index') }}" class="btn btn-primary">Konsultasi Sekarang</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="consultation-image">
+                    <img src="{{ asset('images/mental-health/consultation.svg') }}" alt="Psychological Test" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+.consultation-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+}
+
+.consultation-section .lead {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.consultation-section .btn {
+    padding: 12px 30px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.consultation-section .btn-primary {
+    background-color: #0047AB;
+    border-color: #0047AB;
+}
+
+.consultation-section .btn-primary:hover {
+    background-color: #0047AB;
+    border-color: #0047AB;
+}
+
+.consultation-section .btn-outline-primary {
+    color: #0047AB;
+    border-color: #0047AB;
+}
+
+.consultation-section .btn-outline-primary:hover {
+    background-color: #0047AB;
+    color: #fff;
+}
+
+.consultation-image {
+    text-align: center;
+}
+
+.consultation-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 991.98px) {
+    .consultation-section {
+        padding: 60px 0;
+    }
+    
+    .consultation-section h2 {
+        font-size: 2rem;
+    }
+    
+    .consultation-image {
+        margin-top: 40px;
+    }
+}
+</style>
 
 <!-- Articles Section -->
 <div class="articles-section py-5">

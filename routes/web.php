@@ -13,6 +13,8 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\MentalHealthController;
+
 
 
 
@@ -133,3 +135,14 @@ Route::middleware(['auth'])->group(function () {
 // Hapus duplikasi route berikut karena sudah ada di dalam middleware auth group
 Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
 Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
+
+// Routes untuk Mental Health Assessment
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mental-health', [MentalHealthController::class, 'index'])->name('mental-health.index');
+    Route::get('/mental-health/history', [MentalHealthController::class, 'history'])->name('mental-health.history');
+    Route::get('/mental-health/test/{type}', [MentalHealthController::class, 'test'])->name('mental-health.test');
+    Route::post('/mental-health/submit-test', [MentalHealthController::class, 'submitTest'])->name('mental-health.submit-test');
+    Route::get('/mental-health/questions/{type}', [MentalHealthController::class, 'questions'])->name('mental-health.questions');
+    Route::post('/mental-health/submit-questions', [MentalHealthController::class, 'submitQuestions'])->name('mental-health.submit-questions');
+    Route::get('/mental-health/result/{type}', [MentalHealthController::class, 'result'])->name('mental-health.result');
+});
