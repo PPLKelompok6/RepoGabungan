@@ -105,6 +105,40 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-heartbeat fa-2x text-danger"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Tes Kesehatan</h5>
+                        <p class="card-text text-muted mb-2">Hitung BMI, Kalori, dan Cek Risiko Kesehatan Anda</p>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#healthAssessmentModal">
+                                Mulai Tes
+                            </button>
+                            <a href="{{ route('health-assessments.index') }}" class="btn btn-outline-danger">Lihat Riwayat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-comments fa-2x text-warning"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Healthcare Forum</h5>
+                        <p class="card-text text-muted mb-2">Diskusi dan berbagi pengalaman dengan sesama pasien</p>
+                        <a href="{{ route('forum.index') }}" class="btn btn-warning text-white">Masuk Forum</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
 <style>
