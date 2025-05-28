@@ -139,6 +139,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- Card Rekam Medis -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-notes-medical fa-2x text-info"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Rekam Medis</h5>
+                        <p class="card-text text-muted mb-2">Lihat riwayat rekam medis Anda yang diinput oleh dokter</p>
+                        <a href="{{ route('medical-records.index') }}" class="btn btn-info text-white">Lihat Rekam Medis</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
 <style>

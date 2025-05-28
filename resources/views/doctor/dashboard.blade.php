@@ -110,6 +110,25 @@
                 </div>
             </div>
         </div>
+
+        <!-- Rekam Medis Pasien -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-notes-medical fa-2x text-info"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Rekam Medis Pasien</h5>
+                        <p class="card-text text-muted mb-2">Lihat dan tambahkan rekam medis pasien Anda</p>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('medical-records.create') }}" class="btn btn-info text-white">Tambah Rekam Medis</a>
+                            <a href="{{ route('medical-records.index') }}" class="btn btn-outline-info">Lihat Semua</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Jadwal Hari Ini -->
