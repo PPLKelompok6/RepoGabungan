@@ -19,7 +19,7 @@
                 [
                     'title' => 'Burnout',
                     'description' => 'Ingin tahu apakah kamu mengalami burnout? Tes ini dapat membantu mengukur tingkat burnout yang mungkin kamu alami akibat stres di lingkup pekerjaan.',
-                    'image' => 'burnout.png',
+                    'image' => 'burnout.svg',
                     'type' => 'burnout',
                 ],
                 [

@@ -17,6 +17,7 @@ use App\Http\Controllers\MentalHealthController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\EPrescriptionController;
 
 // Home
 Route::get('/', function () {
@@ -112,7 +113,15 @@ Route::middleware(['auth'])->group(function () {
         
         // Tambahkan route untuk riwayat janji temu dokter
         Route::get('/doctor/appointments/history', [AppointmentController::class, 'doctorHistory'])->name('doctor.appointments.history');
+
+        // E-Prescription Routes
+        Route::get('/e-prescriptions/create/{appointment}', [EPrescriptionController::class, 'create'])->name('e-prescriptions.create');
+        Route::post('/e-prescriptions/{appointment}', [EPrescriptionController::class, 'store'])->name('e-prescriptions.store');
     });
+
+    // Common Routes for E-Prescription (accessible by doctor and patient)
+    Route::get('/e-prescriptions/{prescription}', [EPrescriptionController::class, 'show'])->name('e-prescriptions.show');
+    Route::get('/e-prescriptions/{prescription}/download', [EPrescriptionController::class, 'download'])->name('e-prescriptions.download');
 
     // Common Appointment Routes (semua user yang login)
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
