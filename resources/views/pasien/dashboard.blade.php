@@ -92,14 +92,14 @@
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex align-items-center">
                     <div class="icon-wrapper me-3">
-                        <i class="fas fa-brain fa-2x text-warning"></i>
+                        <i class="fas fa-brain fa-2x text-purple"></i>
                     </div>
                     <div>
                         <h5 class="card-title mb-1">Tes Kesehatan Mental</h5>
                         <p class="card-text text-muted mb-2">Evaluasi kondisi kesehatan mental Anda</p>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('mental-health.index') }}" class="btn btn-warning">Mulai Tes</a>
-                            <a href="{{ route('mental-health.history') }}" class="btn btn-outline-warning">Lihat Riwayat</a>
+                            <a href="{{ route('mental-health.index') }}" class="btn btn-purple">Mulai Tes</a>
+                            <a href="{{ route('mental-health.history') }}" class="btn btn-outline-purple">Lihat Riwayat</a>
                         </div>
                     </div>
                 </div>
@@ -129,12 +129,12 @@
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex align-items-center">
                     <div class="icon-wrapper me-3">
-                        <i class="fas fa-comments fa-2x text-warning"></i>
+                        <i class="fas fa-comments fa-2x text-orange"></i>
                     </div>
                     <div>
                         <h5 class="card-title mb-1">Healthcare Forum</h5>
                         <p class="card-text text-muted mb-2">Diskusi dan berbagi pengalaman dengan sesama pasien</p>
-                        <a href="{{ route('forum.index') }}" class="btn btn-warning text-white">Masuk Forum</a>
+                        <a href="{{ route('forum.index') }}" class="btn btn-orange text-white">Masuk Forum</a>
                     </div>
                 </div>
             </div>
@@ -185,6 +185,47 @@
 
 .shadow-sm {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Warna untuk Tes Kesehatan Mental */
+.text-purple {
+    color: #6f42c1;
+}
+
+.btn-purple {
+    background-color: #6f42c1;
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: #5a32a3;
+    color: white;
+}
+
+.btn-outline-purple {
+    color: #6f42c1;
+    border-color: #6f42c1;
+    background-color: transparent;
+}
+
+.btn-outline-purple:hover {
+    background-color: #6f42c1;
+    color: white;
+}
+
+/* Warna untuk Healthcare Forum */
+.text-orange {
+    color: #fd7e14;
+}
+
+.btn-orange {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.btn-orange:hover {
+    background-color: #e96b02;
+    color: white;
 }
 </style>
 

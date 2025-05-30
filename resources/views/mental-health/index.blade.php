@@ -37,7 +37,7 @@
                 [
                     'title' => 'Trauma',
                     'description' => 'Ingin pulih dari trauma masa lalu? Tes trauma ini dapat menjadi langkah pertama yang penting. Dengan bantuan profesional, kamu dapat menemukan kesejahteraan mental dan emosional.',
-                    'image' => 'trauma.png',
+                    'image' => 'trauma.svg',
                     'type' => 'trauma',
                 ],
                 [
@@ -57,18 +57,17 @@
 
         @foreach($tests as $test)
         <div class="col-md-4 mb-4">
-            <div class="mental-health-card shadow-sm">
-                <div class="card-body p-4">
-                    <h3 class="card-title">{{ $test['title'] }}</h3>
-                    <p class="card-text">{{ $test['description'] }}</p>
+            <div class="kartu-tes">
+                <h3 class="judul-tes">{{ $test['title'] }}</h3>
+                <p class="deskripsi-tes">{{ $test['description'] }}</p>
+                <div class="gambar-wrapper">
                     <img src="{{ asset('images/mental-health/' . $test['image']) }}" 
-                         alt="{{ $test['title'] }} Illustration" class="category-image">
-                    <div class="card-footer bg-transparent border-0">
-                        <a href="{{ route('mental-health.test', ['type' => $test['type']]) }}" class="test-button">
-                            Mulai tes <i class="fas fa-arrow-right ms-2"></i>
-                        </a>
-                    </div>
+                         alt="{{ $test['title'] }} Illustration" 
+                         class="gambar-tes">
                 </div>
+                <a href="{{ route('mental-health.test', ['type' => $test['type']]) }}" class="tombol-mulai">
+                    Mulai tes <i class="fas fa-arrow-right ms-2"></i>
+                </a>
             </div>
         </div>
         @endforeach
@@ -78,69 +77,78 @@
 
 @push('styles')
 <style>
-.mental-health-card {
+.kartu-tes {
     background: white;
-    border-radius: 20px;
+    border-radius: 25px;
     border: 2px solid #03A9F4;
-    padding: 20px;
+    padding: 25px;
     height: 100%;
     position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
 }
 
-.mental-health-card:hover {
-    box-shadow: 0 4px 15px rgba(3, 169, 244, 0.1);
-}
-
-.card-title {
+.judul-tes {
     color: #03A9F4;
     font-size: 24px;
     margin-bottom: 15px;
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
 }
 
-.card-text {
+.deskripsi-tes {
     color: #333;
-    margin-bottom: 80px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    width: 60%;
 }
 
-.card-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-}
-
-.category-image {
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
+.gambar-wrapper {
     position: absolute;
     right: 20px;
-    bottom: 60px;
-    z-index: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 160px;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
 }
 
-.test-button {
-    background-color: #03A9F4;
+.gambar-tes {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.tombol-mulai {
+    background-color: #00B0FF;
     color: white;
     border: none;
     border-radius: 50px;
-    padding: 10px 25px;
+    padding: 12px 30px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     font-weight: 500;
     transition: all 0.3s ease;
-    width: 100%;
-    justify-content: center;
+    width: fit-content;
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
 }
 
-.test-button:hover {
-    background-color: #0288D1;
-    transform: translateY(-2px);
+.tombol-mulai:hover {
+    background-color: #0091EA;
+    color: white;
+    text-decoration: none;
 }
 </style>
 @endpush
