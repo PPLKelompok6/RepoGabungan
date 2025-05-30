@@ -13,11 +13,12 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="text-center mb-3">
-                                        <img src="{{ $doctor->profile_picture ? Storage::url($doctor->profile_picture) : asset('images/default-avatar.png') }}" 
+                                        <img src="{{ $doctor->profile_picture ? Storage::url($doctor->profile_picture)}}" 
                                              alt="{{ $doctor->name }}" 
                                              class="rounded-circle" 
                                              width="100" 
                                              height="100"
+                                             style="object-fit: cover;"
                                              onerror="this.src='{{ asset('images/default-avatar.png') }}'">
                                     </div>
                                     <h5 class="card-title text-center mb-2">{{ $doctor->name }}</h5>
@@ -25,8 +26,8 @@
                                     
                                     <div class="schedule-container">
                                         <h6 class="text-primary mb-2">Jadwal Praktik:</h6>
-                                        @if($doctor->schedules->count() > 0)
-                                            @foreach($doctor->schedules as $schedule)
+                                        @if($doctor->doctorSchedules->count() > 0)
+                                            @foreach($doctor->doctorSchedules as $schedule)
                                                 <div class="schedule-item mb-2 p-2 border rounded">
                                                     <div class="d-flex justify-content-between">
                                                         <span class="fw-bold">{{ ucfirst($schedule->day) }}</span>

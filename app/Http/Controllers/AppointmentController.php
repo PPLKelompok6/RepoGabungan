@@ -16,9 +16,9 @@ class AppointmentController extends Controller
         if (Auth::user()->role === 'admin') {
             $appointments = Appointment::with(['patient', 'doctor'])->latest()->paginate(10);
         } elseif (Auth::user()->role === 'doctor') {
-            $appointments = Auth::user()->doctorAppointments()->with('patient')->latest()->paginate(10);
+            $appointments = Auth::user()->appointments()->with('patient')->latest()->paginate(10);
         } else {
-            $appointments = Auth::user()->patientAppointments()->with('doctor')->latest()->paginate(10);
+            $appointments = Auth::user()->appointments()->with('doctor')->latest()->paginate(10);
         }
 
         return view('appointments.index', compact('appointments'));
@@ -26,9 +26,7 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        $doctors = User::where('role', 'doctor')
-            ->with('schedules')
-            ->get();
+        $doctors = User::where('role', 'doctor')->get();
         return view('appointments.create', compact('doctors'));
     }
 

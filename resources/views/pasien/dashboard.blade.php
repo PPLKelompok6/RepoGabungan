@@ -1,103 +1,192 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Dashboard Pasien</h5>
-                </div>
-                <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+<div class="container py-4">
+    <h1 class="mb-4">Dashboard Pasien</h1>
+    <h4 class="mb-4">Selamat Datang, {{ Auth::user()->name }}!</h4>
 
-                    <h4>Selamat Datang, {{ Auth::user()->name }}!</h4>
-                    
-                    <div class="mt-4">
-                        <h5>Menu Cepat</h5>
-                        <div class="row mt-3">
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-calendar-plus text-primary"></i> Buat Janji Temu
-                                        </h5>
-                                        <p class="card-text">Buat janji temu dengan dokter pilihan Anda</p>
-                                        <a href="{{ route('appointments.create') }}" class="btn btn-primary">
-                                            Buat Janji
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-history text-info"></i> Riwayat Janji Temu
-                                        </h5>
-                                        <p class="card-text">Lihat riwayat janji temu Anda</p>
-                                        <a href="{{ route('appointments.history') }}" class="btn btn-info text-white">
-                                            Lihat Riwayat
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-comments text-success"></i> Chat Dokter
-                                        </h5>
-                                        <p class="card-text">Konsultasi langsung dengan dokter melalui fitur chat</p>
-                                        <a href="{{ route('chat.index') }}" class="btn btn-success text-white">
-                                            Mulai Chat
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Add new Health Assessment card -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-heartbeat text-danger"></i> Tes Kesehatan
-                                        </h5>
-                                        <p class="card-text">Hitung BMI, Kalori, dan Cek Risiko Kesehatan Anda</p>
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#healthAssessmentModal">
-                                                Mulai Tes
-                                            </button>
-                                            <a href="{{ route('health-assessments.index') }}" class="btn btn-outline-danger">
-                                                Lihat Riwayat
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-comments-alt text-warning"></i> Healthcare Forum
-                                        </h5>
-                                        <p class="card-text">Diskusi dan berbagi pengalaman dengan sesama pasien</p>
-                                        <a href="{{ route('forum.index') }}" class="btn btn-warning text-white">
-                                            Masuk Forum
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Statistik Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Kunjungan</h5>
+                    <h2 class="card-text">{{ $totalAppointments ?? 0 }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Tes Mental Health</h5>
+                    <h2 class="card-text">{{ $totalMentalTests ?? 0 }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Chat Dokter</h5>
+                    <h2 class="card-text">{{ $totalChats ?? 0 }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Forum Posts</h5>
+                    <h2 class="card-text">{{ $totalPosts ?? 0 }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Cepat dengan Icons -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-calendar-plus fa-2x text-primary"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Buat Janji Temu</h5>
+                        <p class="card-text text-muted mb-2">Buat janji temu dengan dokter pilihan Anda</p>
+                        <a href="{{ route('appointments.create') }}" class="btn btn-primary">Buat Janji</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-history fa-2x text-info"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Riwayat Janji Temu</h5>
+                        <p class="card-text text-muted mb-2">Lihat riwayat janji temu Anda</p>
+                        <a href="{{ route('appointments.history') }}" class="btn btn-info text-white">Lihat Riwayat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-comments fa-2x text-success"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Chat dengan Dokter</h5>
+                        <p class="card-text text-muted mb-2">Konsultasi langsung dengan dokter melalui chat</p>
+                        <a href="{{ route('chat.index') }}" class="btn btn-success">Mulai Chat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-brain fa-2x text-warning"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Tes Kesehatan Mental</h5>
+                        <p class="card-text text-muted mb-2">Evaluasi kondisi kesehatan mental Anda</p>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('mental-health.index') }}" class="btn btn-warning">Mulai Tes</a>
+                            <a href="{{ route('mental-health.history') }}" class="btn btn-outline-warning">Lihat Riwayat</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-heartbeat fa-2x text-danger"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Tes Kesehatan</h5>
+                        <p class="card-text text-muted mb-2">Hitung BMI, Kalori, dan Cek Risiko Kesehatan Anda</p>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#healthAssessmentModal">
+                                Mulai Tes
+                            </button>
+                            <a href="{{ route('health-assessments.index') }}" class="btn btn-outline-danger">Lihat Riwayat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-comments fa-2x text-warning"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Healthcare Forum</h5>
+                        <p class="card-text text-muted mb-2">Diskusi dan berbagi pengalaman dengan sesama pasien</p>
+                        <a href="{{ route('forum.index') }}" class="btn btn-warning text-white">Masuk Forum</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Rekam Medis -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-notes-medical fa-2x text-info"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-1">Rekam Medis</h5>
+                        <p class="card-text text-muted mb-2">Lihat riwayat rekam medis Anda yang diinput oleh dokter</p>
+                        <a href="{{ route('medical-records.index') }}" class="btn btn-info text-white">Lihat Rekam Medis</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    
+<style>
+.card {
+    transition: transform 0.2s ease-in-out;
+    border: none;
+    border-radius: 15px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.icon-wrapper {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 8px 20px;
+}
+
+.shadow-sm {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+</style>
 
     <!-- Health Assessment Modal -->
     <div class="modal fade" id="healthAssessmentModal" tabindex="-1" aria-labelledby="healthAssessmentModalLabel" aria-hidden="true">

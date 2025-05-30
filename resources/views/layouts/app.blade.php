@@ -55,19 +55,36 @@
                                 </a>
                             </li>
                         @endif
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
                             </a>
-                        </li>
-                        <!-- Tombol Logout -->
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;">
-                                    <i class="fas fa-sign-out-alt me-1"></i> Logout
-                                </button>
-                            </form>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @if(Auth::user()->role === 'doctor')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('doctor.profile.edit') }}">
+                                            <i class="fas fa-user-edit me-1"></i> Edit Profile
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                @endif
+                                @if(Auth::user()->role === 'user')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('feedback.index') }}">
+                                            <i class="fas fa-star me-1"></i> Feedback & Rating
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                @endif
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     @endguest
                 </ul>

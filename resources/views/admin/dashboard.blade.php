@@ -189,6 +189,69 @@
             </div>
         </div>
     </div>
+
+    <!-- Mental Health Test History -->
+    <div class="card mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Riwayat Tes Kesehatan Mental</h5>
+            <a href="{{ route('admin.mental-health.results') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-brain"></i> Lihat Semua
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama Pasien</th>
+                            <th>Jenis Tes</th>
+                            <th>Skor</th>
+                            <th>Level</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($mentalHealthTests as $test)
+                        <tr>
+                            <td>{{ $test->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $test->user->name }}</td>
+                            <td>{{ ucfirst($test->test_type) }}</td>
+                            <td>{{ $test->score }}</td>
+                            <td>
+                                @php
+                                    $level = '';
+                                    $badge = '';
+                                    if ($test->score <= 44) {
+                                        $level = 'Rendah';
+                                        $badge = 'bg-success';
+                                    } elseif ($test->score <= 88) {
+                                        $level = 'Sedang';
+                                        $badge = 'bg-warning';
+                                    } else {
+                                        $level = 'Tinggi';
+                                        $badge = 'bg-danger';
+                                    }
+                                @endphp
+                                <span class="badge {{ $badge }}">{{ $level }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.mental-health.detail', $test->id) }}" 
+                                   class="btn btn-sm btn-info text-white">
+                                    <i class="fas fa-eye"></i> Detail
+                                </a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center">Belum ada riwayat tes kesehatan mental</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row mt-4">
     <!-- Card Total Artikel -->

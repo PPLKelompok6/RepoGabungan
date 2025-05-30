@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Doctor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -17,28 +18,48 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'specialization' => 'required|in:Dokter Umum,Dokter Gigi,Psikologis',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'specialization' => 'required|string'
         ]);
 
-        $user = auth()->user();
-        $user->name = $request->name;
-        $user->specialization = $request->specialization;
+        try {
+            $user = auth()->user();
 
-        if ($request->hasFile('profile_picture')) {
-            // Delete old profile picture if exists
-            if ($user->profile_picture && !str_contains($user->profile_picture, 'default-avatar.png')) {
-                Storage::disk('public')->delete($user->profile_picture);
+            if ($request->hasFile('profile_picture')) {
+                $file = $request->file('profile_picture');
+                
+                // Delete old image if exists
+                if ($user->profile_picture) {
+                    Storage::disk('public')->delete($user->profile_picture);
+                }
+
+                // Generate unique filename
+                $filename = time() . '_' . $file->getClientOriginalName();
+                
+                // Store the file
+                $path = $file->storeAs('profile-pictures', $filename, 'public');
+                
+                if (!$path) {
+                    throw new \Exception('Failed to store image');
+                }
+
+                $user->profile_picture = $path;
+                Log::info('Profile picture updated', ['user' => $user->id, 'path' => $path]);
             }
 
-            // Store new profile picture
-            $path = $request->file('profile_picture')->store('profile-pictures', 'public');
-            $user->profile_picture = $path; // Store path without 'storage/' prefix
+            $user->name = $request->name;
+            $user->specialization = $request->specialization;
+            $user->save();
+
+            return redirect()->back()->with('success', 'Profile updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Profile update failed', [
+                'error' => $e->getMessage(),
+                'user' => auth()->id()
+            ]);
+            return redirect()->back()
+                ->with('error', 'Failed to update profile: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $user->save();
-
-        return redirect()->route('doctor.profile.edit')
-            ->with('success', 'Profil berhasil diperbarui');
     }
 }
