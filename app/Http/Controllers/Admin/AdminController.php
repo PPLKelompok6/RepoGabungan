@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\HealthAssessment;
 use App\Models\Article;
+use App\Models\MentalHealthTest;
 
 class AdminController extends Controller
 {
@@ -17,7 +18,17 @@ class AdminController extends Controller
             ->take(5)
             ->get();
         
-        return view('admin.dashboard', compact('totalArticles', 'latestArticles', 'healthAssessments'));
+        $mentalHealthTests = MentalHealthTest::with('user')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        
+        return view('admin.dashboard', compact(
+            'totalArticles', 
+            'latestArticles', 
+            'healthAssessments',
+            'mentalHealthTests'
+        ));
     }
 
     public function healthAssessments()
@@ -27,5 +38,26 @@ class AdminController extends Controller
             ->get();
 
         return view('admin.health-assessments.index', compact('healthAssessments'));
+    }
+
+    public function mentalHealthResults()
+    {
+        $mentalHealthTests = MentalHealthTest::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Calculate statistics
+        $totalTests = MentalHealthTest::count();
+        $lowRiskTests = MentalHealthTest::where('score', '<=', 44)->count();
+        $mediumRiskTests = MentalHealthTest::whereBetween('score', [45, 88])->count();
+        $highRiskTests = MentalHealthTest::where('score', '>=', 89)->count();
+
+        return view('admin.mental-health-results', compact(
+            'mentalHealthTests',
+            'totalTests',
+            'lowRiskTests',
+            'mediumRiskTests',
+            'highRiskTests'
+        ));
     }
 }
