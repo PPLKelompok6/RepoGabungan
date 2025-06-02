@@ -157,6 +157,26 @@
         </div>
     </div>
     
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-box bg-primary text-white me-3">
+                            <i class="fas fa-prescription-bottle-alt"></i>
+                        </div>
+                        <h5 class="card-title mb-0">Resep Digital</h5>
+                    </div>
+                    <p class="card-text">Lihat riwayat resep digital Anda</p>
+                    <a href="{{ route('e-prescriptions.history') }}" class="btn btn-primary">
+                        <i class="fas fa-list me-1"></i> Lihat Riwayat
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
 .card {
     transition: transform 0.2s ease-in-out;
@@ -226,6 +246,16 @@
 .btn-orange:hover {
     background-color: #e96b02;
     color: white;
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
 }
 </style>
 

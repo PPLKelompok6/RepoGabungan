@@ -18,6 +18,8 @@ use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EPrescriptionController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\Doctor\ProfileController;
 
 // Home
 Route::get('/', function () {
@@ -45,6 +47,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
+    // User Profile Routes
+    Route::get('/user/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/user/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
+
     // Feedback Routes (accessible by all authenticated users)
     Route::resource('feedback', FeedbackController::class)->only([
         'index', 'store', 'destroy'
@@ -98,6 +104,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
         Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
         Route::get('/appointments/history', [AppointmentController::class, 'history'])->name('appointments.history');
+        
+        // E-Prescription History Route
+        Route::get('/e-prescriptions/history', [EPrescriptionController::class, 'patientHistory'])->name('e-prescriptions.history');
     });
 
     // Doctor Routes
@@ -105,6 +114,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/doctor/dashboard', function () {
             return view('doctor.dashboard');
         })->name('doctor.dashboard');
+
+        // Doctor Profile Routes
+        Route::get('/doctor/profile/edit', [ProfileController::class, 'edit'])->name('doctor.profile.edit');
+        Route::put('/doctor/profile/update', [ProfileController::class, 'update'])->name('doctor.profile.update');
 
         Route::get('/doctor/schedule', [DoctorScheduleController::class, 'index'])->name('doctor.schedule');
         Route::get('/doctor/schedule/create', [DoctorScheduleController::class, 'create'])->name('doctor.schedule.create');
@@ -122,6 +135,7 @@ Route::middleware(['auth'])->group(function () {
     // Common Routes for E-Prescription (accessible by doctor and patient)
     Route::get('/e-prescriptions/{prescription}', [EPrescriptionController::class, 'show'])->name('e-prescriptions.show');
     Route::get('/e-prescriptions/{prescription}/download', [EPrescriptionController::class, 'download'])->name('e-prescriptions.download');
+    Route::post('/e-prescriptions/{prescription}/update-status', [EPrescriptionController::class, 'updateStatus'])->name('e-prescriptions.update-status');
 
     // Common Appointment Routes (semua user yang login)
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');

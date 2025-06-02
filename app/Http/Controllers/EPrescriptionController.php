@@ -71,4 +71,31 @@ class EPrescriptionController extends Controller
         
         return $pdf->download('resep-' . $prescription->id . '.pdf');
     }
+
+    public function updateStatus(EPrescription $prescription)
+    {
+        if (auth()->id() !== $prescription->patient_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $prescription->update([
+            'status' => 'completed'
+        ]);
+
+        return redirect()->back()->with('success', 'Status resep berhasil diperbarui.');
+    }
+
+    public function patientHistory(Request $request)
+    {
+        $sort = $request->query('sort', 'desc'); // default sort by newest
+        
+        $prescriptions = EPrescription::with(['appointment', 'appointment.doctor'])
+            ->whereHas('appointment', function($query) {
+                $query->where('patient_id', auth()->id());
+            })
+            ->orderBy('created_at', $sort)
+            ->get();
+
+        return view('e-prescriptions.patient-history', compact('prescriptions', 'sort'));
+    }
 }
