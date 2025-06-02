@@ -13,13 +13,17 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="text-center mb-3">
-                                        <img src="{{ $doctor->profile_picture ? Storage::url($doctor->profile_picture)}}" 
+                                        @php
+                                            $profilePicturePath = $doctor->profile_picture;
+                                            $imageUrl = $profilePicturePath ? asset('storage/' . $profilePicturePath) : asset('images/default-avatar.png');
+                                        @endphp
+                                        
+                                        <img src="{{ $imageUrl }}" 
                                              alt="{{ $doctor->name }}" 
                                              class="rounded-circle" 
                                              width="100" 
                                              height="100"
-                                             style="object-fit: cover;"
-                                             onerror="this.src='{{ asset('images/default-avatar.png') }}'">
+                                             style="object-fit: cover;">
                                     </div>
                                     <h5 class="card-title text-center mb-2">{{ $doctor->name }}</h5>
                                     <p class="text-center text-muted mb-3">{{ $doctor->specialization }}</p>

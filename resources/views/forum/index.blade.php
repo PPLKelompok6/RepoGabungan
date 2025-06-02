@@ -59,17 +59,10 @@
                     <div class="forum-post border-bottom py-3">
                         <div class="d-flex">
                             <div class="avatar me-3">
-                                @if($post->user && $post->user->avatar)
-                                    <img src="{{ asset('storage/avatars/' . $post->user->avatar) }}" 
-                                         class="rounded-circle"
-                                         style="width: 50px; height: 50px; object-fit: cover;"
-                                         alt="{{ $post->user->name }}'s avatar">
-                                @else
-                                    <img src="{{ asset('images/default-avatar.png') }}" 
-                                         class="rounded-circle"
-                                         style="width: 50px; height: 50px; object-fit: cover;"
-                                         alt="Default avatar">
-                                @endif
+                                <img src="{{ $post->user->profile_picture ? asset('storage/' . $post->user->profile_picture) : asset('images/default-avatar.png') }}" 
+                                     class="rounded-circle"
+                                     style="width: 50px; height: 50px; object-fit: cover;"
+                                     alt="{{ $post->user->name }}'s avatar">
                             </div>
                             <div class="post-content flex-grow-1">
                                 <!-- Topik -->

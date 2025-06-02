@@ -17,6 +17,7 @@ use App\Http\Controllers\MentalHealthController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserProfileController;
 
 // Home
 Route::get('/', function () {
@@ -132,6 +133,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
     Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
     Route::get('/medical-records/select-patient', [MedicalRecordController::class, 'selectPatient'])->name('medical-records.select-patient');
+
+    // User Profile Routes
+    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
 });
 
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');

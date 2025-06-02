@@ -25,20 +25,26 @@
                 @method('PUT')
                 
                 <div class="row">
-                    <div class="col-md-4 text-center mb-4">
-                        <img src="{{ Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-avatar.png') }}" 
-                             alt="Profile Picture" 
-                             class="rounded-circle mb-3" 
-                             style="width: 200px; height: 200px; object-fit: cover;"
-                             id="preview-image"
-                             onerror="this.src='{{ asset('images/default-avatar.png') }}'">
-                        <div class="mb-3">
-                            <label for="profile_picture" class="form-label">Ubah Foto Profil</label>
-                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*" onchange="previewImage(this)">
-                            @error('profile_picture')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <div class="text-center mb-3">
+                        @php
+                            $profilePicturePath = auth()->user()->profile_picture;
+                            $imageUrl = $profilePicturePath ? asset('storage/' . $profilePicturePath) : asset('images/default-avatar.png');
+                        @endphp
+                        
+                        <img id="preview-image"
+                             src="{{ $imageUrl }}" 
+                             alt="{{ auth()->user()->name }}" 
+                             class="rounded-circle" 
+                             width="100" 
+                             height="100"
+                             style="object-fit: cover;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*" onchange="previewImage(this)">
+                        @error('profile_picture')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="col-md-8">
                         <div class="mb-3">

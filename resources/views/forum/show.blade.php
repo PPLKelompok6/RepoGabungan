@@ -9,17 +9,10 @@
                 <div class="card-body">
                     <!-- Header dengan Avatar dan Info Dasar -->
                     <div class="d-flex align-items-center mb-3">
-                        @if($post->user && $post->user->avatar)
-                            <img src="{{ asset('storage/avatars/' . $post->user->avatar) }}" 
-                                 class="rounded-circle me-2"
-                                 style="width: 40px; height: 40px; object-fit: cover;"
-                                 alt="{{ $post->user->name }}'s avatar">
-                        @else
-                            <img src="{{ asset('images/default-avatar.png') }}" 
-                                 class="rounded-circle me-2"
-                                 style="width: 40px; height: 40px; object-fit: cover;"
-                                 alt="Default avatar">
-                        @endif
+                        <img src="{{ $post->user->profile_picture ? asset('storage/' . $post->user->profile_picture) : asset('images/default-avatar.png') }}" 
+                             class="rounded-circle me-2"
+                             style="width: 40px; height: 40px; object-fit: cover;"
+                             alt="{{ $post->user->name }}'s avatar">
                         <div class="flex-grow-1">
                             <!-- Topik -->
                             <div class="topic-badge mb-1">
@@ -70,17 +63,10 @@
                     @foreach($post->comments as $comment)
                     <div class="comment-item mb-3 pb-3 border-bottom">
                         <div class="d-flex">
-                            @if($comment->user && $comment->user->avatar)
-                                <img src="{{ asset('storage/avatars/' . $comment->user->avatar) }}" 
-                                     class="rounded-circle me-2"
-                                     style="width: 32px; height: 32px; object-fit: cover;"
-                                     alt="{{ $comment->user->name }}'s avatar">
-                            @else
-                                <img src="{{ asset('images/default-avatar.png') }}" 
-                                     class="rounded-circle me-2"
-                                     style="width: 32px; height: 32px; object-fit: cover;"
-                                     alt="Default avatar">
-                            @endif
+                            <img src="{{ $comment->user->profile_picture ? asset('storage/' . $comment->user->profile_picture) : asset('images/default-avatar.png') }}" 
+                                 class="rounded-circle me-2"
+                                 style="width: 32px; height: 32px; object-fit: cover;"
+                                 alt="{{ $comment->user->name }}'s avatar">
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong>{{ $comment->user->name }}</strong>

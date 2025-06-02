@@ -59,32 +59,31 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 @if(Auth::user()->role === 'doctor')
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('doctor.profile.edit') }}">
-                                            <i class="fas fa-user-edit me-1"></i> Edit Profile
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <a class="dropdown-item" href="{{ route('doctor.profile.edit') }}">
+                                        <i class="fas fa-user-edit me-2"></i>{{ __('Edit Profile') }}
+                                    </a>
+                                @else
+                                    <a class="dropdown-item" href="{{ route('user.profile.edit') }}">
+                                        <i class="fas fa-user-edit me-2"></i>{{ __('Edit Profile') }}
+                                    </a>
                                 @endif
-                                @if(Auth::user()->role === 'user')
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('feedback.index') }}">
-                                            <i class="fas fa-star me-1"></i> Feedback & Rating
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                @endif
-                                <li>
-                                    <form action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-sign-out-alt me-1"></i> Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
+                                
+                                <a class="dropdown-item" href="{{ route('feedback.index') }}">
+                                    <i class="fas fa-star me-2"></i>{{ __('Feedback & Rating') }}
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i>{{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
                         </li>
                     @endguest
                 </ul>

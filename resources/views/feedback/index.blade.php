@@ -85,7 +85,10 @@
                     @foreach($feedbacks as $feedback)
                         <div class="testimonial-item mb-4">
                             <div class="d-flex align-items-center gap-3">
-                                <img src="{{ asset('images/default-avatar.png') }}" alt="User Avatar" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                                <img src="{{ $feedback->user->profile_picture ? asset('storage/' . $feedback->user->profile_picture) : asset('images/default-avatar.png') }}" 
+                                     alt="{{ $feedback->user->name }}" 
+                                     class="rounded-circle" 
+                                     style="width: 60px; height: 60px; object-fit: cover;">
                                 <div class="flex-grow-1">
                                     <h6 class="mb-1">{{ $feedback->user->name }}</h6>
                                     <div class="rating mb-2">

@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Doctor;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
-class ProfileController extends Controller
+class UserProfileController extends Controller
 {
     public function edit()
     {
-        return view('doctor.profile.edit');
+        return view('user.profile.edit');
     }
 
     public function update(Request $request)
@@ -19,7 +18,6 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'specialization' => 'required|string'
         ]);
 
         try {
@@ -50,7 +48,6 @@ class ProfileController extends Controller
             }
 
             $user->name = $request->name;
-            $user->specialization = $request->specialization;
             $user->save();
 
             return redirect()->back()->with('success', 'Profile updated successfully');
@@ -65,4 +62,4 @@ class ProfileController extends Controller
                 ->withInput();
         }
     }
-}
+} 
