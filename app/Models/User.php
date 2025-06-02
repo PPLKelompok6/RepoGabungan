@@ -21,8 +21,7 @@ class User extends Authenticatable
         'address',
         'date_of_birth',
         'gender',
-        'profile_picture',
-        'specialization',
+        'profile_photo',
     ];
 
     protected $hidden = [
@@ -40,20 +39,20 @@ class User extends Authenticatable
         return $this->hasMany(Appointment::class, 'patient_id');
     }
 
-    public function doctorSchedules()
+    public function patientAppointments()
     {
-        return $this->hasMany(DoctorSchedule::class, 'doctor_id');
+        return $this->hasMany(Appointment::class, 'patient_id');
     }
 
-        public function doctorAppointments()
+    public function doctorAppointments()
     {
         return $this->hasMany(Appointment::class, 'doctor_id');
     }
 
-    public function patientAppointments()
+    public function doctorSchedules()
     {
-    return $this->hasMany(Appointment::class, 'patient_id');
-}
+        return $this->hasMany(DoctorSchedule::class, 'doctor_id');
+    }
 
     public function healthAssessments()
     {

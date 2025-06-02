@@ -17,7 +17,7 @@ use App\Http\Controllers\MentalHealthController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\EPrescriptionController;
 
 // Home
 Route::get('/', function () {
@@ -114,11 +114,14 @@ Route::middleware(['auth'])->group(function () {
         // Tambahkan route untuk riwayat janji temu dokter
         Route::get('/doctor/appointments/history', [AppointmentController::class, 'doctorHistory'])->name('doctor.appointments.history');
 
-        // Doctor Profile Routes
-        Route::get('/doctor/profile', [App\Http\Controllers\Doctor\ProfileController::class, 'show'])->name('doctor.profile.show');
-        Route::get('/doctor/profile/edit', [App\Http\Controllers\Doctor\ProfileController::class, 'edit'])->name('doctor.profile.edit');
-        Route::put('/doctor/profile', [App\Http\Controllers\Doctor\ProfileController::class, 'update'])->name('doctor.profile.update');
+        // E-Prescription Routes
+        Route::get('/e-prescriptions/create/{appointment}', [EPrescriptionController::class, 'create'])->name('e-prescriptions.create');
+        Route::post('/e-prescriptions/{appointment}', [EPrescriptionController::class, 'store'])->name('e-prescriptions.store');
     });
+
+    // Common Routes for E-Prescription (accessible by doctor and patient)
+    Route::get('/e-prescriptions/{prescription}', [EPrescriptionController::class, 'show'])->name('e-prescriptions.show');
+    Route::get('/e-prescriptions/{prescription}/download', [EPrescriptionController::class, 'download'])->name('e-prescriptions.download');
 
     // Common Appointment Routes (semua user yang login)
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
@@ -133,10 +136,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
     Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
     Route::get('/medical-records/select-patient', [MedicalRecordController::class, 'selectPatient'])->name('medical-records.select-patient');
-
-    // User Profile Routes
-    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
-    Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
 });
 
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');

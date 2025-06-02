@@ -26,7 +26,12 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        $doctors = User::where('role', 'doctor')->get();
+        $doctors = User::where('role', 'doctor')
+            ->with(['doctorSchedules' => function($query) {
+                $query->orderBy('day', 'asc')
+                      ->orderBy('start_time', 'asc');
+            }])
+            ->get();
         return view('appointments.create', compact('doctors'));
     }
 
@@ -36,32 +41,90 @@ class AppointmentController extends Controller
             'doctor_id' => 'required|exists:users,id',
             'appointment_date' => 'required|date|after:now',
             'notes' => 'nullable|string'
+        ], [
+            'appointment_date.after' => 'Waktu janji temu harus setelah waktu sekarang',
+            'doctor_id.required' => 'Silakan pilih dokter terlebih dahulu',
+            'doctor_id.exists' => 'Dokter yang dipilih tidak valid'
         ]);
 
         $appointmentDateTime = Carbon::parse($validated['appointment_date']);
         $dayOfWeek = strtolower($appointmentDateTime->format('l'));
         $time = $appointmentDateTime->format('H:i:s');
 
+        // Inisialisasi model DoctorSchedule untuk translasi hari
+        $doctorScheduleModel = new DoctorSchedule();
+        $dayOfWeek = $doctorScheduleModel->translateDay($dayOfWeek);
+
         // Validasi jadwal dokter
         $doctorSchedule = DoctorSchedule::where('doctor_id', $validated['doctor_id'])
             ->where('day', $dayOfWeek)
             ->where('start_time', '<=', $time)
-            ->where('end_time', '>=', $time)
+            ->where('end_time', '>', $time)
             ->first();
 
         if (!$doctorSchedule) {
-            return back()->withErrors(['appointment_date' => 'Jadwal tidak tersedia pada waktu yang dipilih']);
+            $dayNames = [
+                'sunday' => 'Minggu',
+                'monday' => 'Senin',
+                'tuesday' => 'Selasa',
+                'wednesday' => 'Rabu',
+                'thursday' => 'Kamis',
+                'friday' => 'Jumat',
+                'saturday' => 'Sabtu'
+            ];
+            
+            // Cari jadwal dokter untuk hari tersebut untuk memberikan informasi yang lebih baik
+            $availableSchedule = DoctorSchedule::where('doctor_id', $validated['doctor_id'])
+                ->where('day', $dayOfWeek)
+                ->first();
+
+            $errorMessage = sprintf(
+                'Jadwal tidak tersedia pada %s pukul %s.',
+                $dayNames[strtolower($doctorScheduleModel->translateDay($dayOfWeek))] ?? $dayOfWeek,
+                $appointmentDateTime->format('H:i')
+            );
+
+            if ($availableSchedule) {
+                $errorMessage .= sprintf(
+                    ' Silakan pilih waktu antara %s sampai %s (sebelum jam selesai).',
+                    Carbon::parse($availableSchedule->start_time)->format('H:i'),
+                    Carbon::parse($availableSchedule->end_time)->format('H:i')
+                );
+            } else {
+                $errorMessage .= ' Dokter tidak memiliki jadwal praktik di hari ini.';
+            }
+            
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'appointment_date' => $errorMessage
+                ]);
+        }
+
+        // Cek apakah sudah ada appointment di waktu yang sama
+        $existingAppointment = Appointment::where('doctor_id', $validated['doctor_id'])
+            ->whereDate('appointment_date', $appointmentDateTime->toDateString())
+            ->whereTime('appointment_date', $time)
+            ->exists();
+
+        if ($existingAppointment) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'appointment_date' => 'Jadwal sudah dibooking oleh pasien lain. Silakan pilih waktu lain.'
+                ]);
         }
 
         $appointment = Appointment::create([
             'patient_id' => Auth::id(),
             'doctor_id' => $validated['doctor_id'],
             'appointment_date' => $validated['appointment_date'],
-            'notes' => $validated['notes']
+            'notes' => $validated['notes'],
+            'status' => 'pending'
         ]);
 
         return redirect()->route('appointments.index')
-            ->with('success', 'Janji temu berhasil dibuat.');
+            ->with('success', 'Janji temu berhasil dibuat. Silakan tunggu konfirmasi dari dokter.');
     }
 
     public function show(Appointment $appointment)
