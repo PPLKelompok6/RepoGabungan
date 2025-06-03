@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
         ]);
     });
 
+    
     // Patient (User) Routes
     Route::middleware('role:user')->group(function () {
         Route::get('/pasien/dashboard', function () {
@@ -174,6 +175,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mental-health/submit-questions', [MentalHealthController::class, 'submitQuestions'])->name('mental-health.submit-questions');
     Route::get('/mental-health/result/{type}', [MentalHealthController::class, 'result'])->name('mental-health.result');
 });
+
+// Artikel Routes (accessible without login)
+Route::get('/articles', [App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{article:slug}', [App\Http\Controllers\ArticleController::class, 'show'])->name('articles.show');
 
 // Routes untuk Admin Mental Health
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
