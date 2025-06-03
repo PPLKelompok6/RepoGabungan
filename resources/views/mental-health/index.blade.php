@@ -65,7 +65,7 @@
                          alt="{{ $test['title'] }} Illustration" 
                          class="gambar-tes">
                 </div>
-                <a href="{{ route('mental-health.test', ['type' => $test['type']]) }}" class="tombol-mulai">
+                <a href="{{ route('mental-health.test', ['type' => $test['type']]) }}" class="tombol-mulai" dusk="start-{{ str_replace(' ', '-', strtolower($test['title'])) }}-test">
                     Mulai tes <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
