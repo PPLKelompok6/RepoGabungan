@@ -54,6 +54,16 @@
                                     <i class="fas fa-history me-1"></i> Riwayat Janji Temu
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('articles.index') }}">
+                                    <i class="fas fa-newspaper me-1"></i> Article
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('forum.index') }}">
+                                    <i class="fas fa-comments me-1"></i> Forum
+                                </a>
+                            </li>
                         @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,10 +89,9 @@
                                                      document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt me-2"></i>{{ __('Logout') }}
                                 </a>
-
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
-                                </form>
+                                </form> 
                             </div>
                         </li>
                     @endguest
