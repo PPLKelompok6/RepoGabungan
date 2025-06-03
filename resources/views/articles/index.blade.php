@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0">Artikel Kesehatan Banget</h5>
+            <h5 class="mb-0">Artikel Kesehatan.</h5>
         </div>
         <div class="card-body">
             <div class="row">
