@@ -81,7 +81,7 @@
                     </div>
                     <div>
                         <h5 class="card-title mb-1">Chat dengan Dokter</h5>
-                        <p class="card-text text-muted mb-2">Konsultasi langsung dengan dokter melalui chat</p>
+                        <p class="card-text text-muted mb-2">Konsultasi langsung dengan dokter melalui chat!</p>
                         <a href="{{ route('chat.index') }}" class="btn btn-success">Mulai Chat</a>
                     </div>
                 </div>
