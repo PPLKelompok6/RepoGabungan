@@ -18,6 +18,8 @@ use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EPrescriptionController;
+use App\Http\Controllers\Doctor\ProfileController;
+use App\Http\Controllers\User\UserProfileController;
 
 // Home
 Route::get('/', function () {
@@ -98,6 +100,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
         Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
         Route::get('/appointments/history', [AppointmentController::class, 'history'])->name('appointments.history');
+
+        // User Profile Routes
+        Route::get('/profile', [UserProfileController::class, 'index'])->name('user.profile.index');
+        Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+        Route::put('/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+        Route::get('/profile/change-password', [UserProfileController::class, 'changePassword'])->name('user.profile.change-password');
+        Route::put('/profile/update-password', [UserProfileController::class, 'updatePassword'])->name('user.profile.update-password');
+        Route::get('/profile/medical-history', [UserProfileController::class, 'medicalHistory'])->name('user.profile.medical-history');
     });
 
     // Doctor Routes
@@ -117,6 +127,13 @@ Route::middleware(['auth'])->group(function () {
         // E-Prescription Routes
         Route::get('/e-prescriptions/create/{appointment}', [EPrescriptionController::class, 'create'])->name('e-prescriptions.create');
         Route::post('/e-prescriptions/{appointment}', [EPrescriptionController::class, 'store'])->name('e-prescriptions.store');
+
+        // Profile routes
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
+        Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
     });
 
     // Common Routes for E-Prescription (accessible by doctor and patient)

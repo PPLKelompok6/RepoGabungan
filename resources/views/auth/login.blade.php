@@ -8,7 +8,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
                     <div class="text-center mb-4">
-                        <img src="{{ asset('images/logo.png') }}" alt="MedFast Logo" height="60" class="mb-3">
+                        <img src="{{ asset('images/logo.png') }}" alt="MedFast Logo" height="120" class="mb-3">
                         <h2 class="fw-bold text-primary">Selamat Datang</h2>
                         <p class="text-muted">Silakan masukkan data akun yang telah terdaftar</p>
                     </div>
