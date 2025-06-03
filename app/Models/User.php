@@ -14,7 +14,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'email_verified'
+        'email_verified',
     ];
 
     protected $hidden = [
@@ -26,4 +26,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'email_verified' => 'boolean',
     ];
+
+    // Relationship for doctor schedules
+    public function schedules()
+    {
+        return $this->hasMany(DoctorSchedule::class, 'doctor_id');
+    }
+
+    // Relationship for appointments as doctor
+    public function doctorAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
+    }
+
+    // Relationship for appointments as patient
+    public function patientAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'patient_id');
+    }
+
+    // Helper method to check if the user is a doctor
+    public function isDoctor()
+    {
+        return $this->role === 'doctor';
+    }
 }
