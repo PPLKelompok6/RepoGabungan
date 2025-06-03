@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="instructions" class="form-label">{{ __('Instruksi Penggunaan') }}</label>
+                            <label for="instructions" class="form-label">{{ __('Instruksi Penggunaan Obat') }}</label>
                             <textarea class="form-control @error('instructions') is-invalid @enderror" 
                                       id="instructions" name="instructions" rows="3">{{ old('instructions') }}</textarea>
                             @error('instructions')
