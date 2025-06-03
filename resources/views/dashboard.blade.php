@@ -8,22 +8,14 @@
                 <h1 class="display-4 mb-4">Your Trust is Our <span class="text-primary">Greatest Priority</span></h1>
                 <p class="lead mb-4">Experience the convenience of campus-based healthcare solutions. Get the quality care you deserve, right where you are.</p>
                 <div class="d-flex gap-3">
-                    @auth
-                        @if(Auth::user()->role === 'user')
-                            <a href="{{ route('appointments.create') }}" class="btn btn-primary btn-lg">Book Appointment</a>
-                        @else
-                            <a href="{{ route('appointments.index') }}" class="btn btn-primary btn-lg">View Appointments</a>
-                        @endif
-                    @else
-                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Book Appointment</a>
-                    @endauth
-                    <a href="tel:123-4567-890" class="btn btn-outline-primary btn-lg">
+                    <a href="{{ route('register') }}" class="btn btn-primary btn-lg">Book Appointment</a>
+                    <a href="tel:+1234567890" class="btn btn-outline-primary btn-lg">
                         <i class="fas fa-phone-alt me-2"></i>123 4567 890
                     </a>
                 </div>
             </div>
             <div class="col-lg-6">
-                <img src="{{ asset('images/doctor.png') }}" alt="Doctor" class="img-fluid hero-image" onerror="this.src='{{ asset('images/default-doctor.png') }}'">
+                <img src="{{ asset('images/doctor.png') }}" alt="Doctor" class="img-fluid hero-image">
             </div>
         </div>
     </div>

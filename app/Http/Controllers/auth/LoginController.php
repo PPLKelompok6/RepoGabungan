@@ -14,11 +14,9 @@ class LoginController extends Controller
             // Redirect based on role if already logged in
             $user = Auth::user();
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('dokter.dashboard');
             } elseif ($user->role === 'user') {
                 return redirect()->route('pasien.dashboard');
-            } elseif ($user->role === 'doctor') {
-                return redirect()->route('doctor.dashboard');
             }
         }
         return view('auth.login');
@@ -39,11 +37,13 @@ class LoginController extends Controller
             // Redirect based on role
             $user = Auth::user();
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard')->with('success', 'Anda telah berhasil login sebagai Admin!');
-            } elseif ($user->role === 'doctor') {
-                return redirect()->route('doctor.dashboard')->with('success', 'Anda telah berhasil login sebagai Dokter!');
+                return redirect()->route('dokter.dashboard')->with('success', $remember 
+                    ? 'Anda telah berhasil login sebagai Admin dengan Remember Me aktif!' 
+                    : 'Anda telah berhasil login sebagai Admin!');
             } elseif ($user->role === 'user') {
-                return redirect()->route('pasien.dashboard')->with('success', 'Anda telah berhasil login sebagai Pasien!');
+                return redirect()->route('pasien.dashboard')->with('success', $remember 
+                    ? 'Anda telah berhasil login sebagai User dengan Remember Me aktif!' 
+                    : 'Anda telah berhasil login sebagai User!');
             }
         }
 

@@ -12,25 +12,28 @@ class ChatController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $selectedUserId = $request->get('user_id');
-        $messages = collect();
         
-        // Ambil lawan chat sesuai role
-        if ($user->role === 'user') {
-            $users = User::where('role', 'doctor')->get();
-        } else if ($user->role === 'doctor') {
+        // Get list of users to chat with based on role
+        if ($user->role === 'admin') {
             $users = User::where('role', 'user')->get();
         } else {
-            $users = collect();
+            $users = User::where('role', 'admin')->get();
         }
 
-        // Jika sudah memilih lawan chat, ambil pesan
-        if ($selectedUserId) {
-            $messages = ChatMessage::where(function($query) use ($user, $selectedUserId) {
+        // Get or set receiver_id
+        $receiver_id = $request->query('user_id');
+        if (!$receiver_id && $users->count() > 0) {
+            $receiver_id = $users->first()->id;
+        }
+
+        // Get messages if receiver_id is set
+        $messages = [];
+        if ($receiver_id) {
+            $messages = ChatMessage::where(function($query) use ($user, $receiver_id) {
                 $query->where('sender_id', $user->id)
-                      ->where('receiver_id', $selectedUserId);
-            })->orWhere(function($query) use ($user, $selectedUserId) {
-                $query->where('sender_id', $selectedUserId)
+                      ->where('receiver_id', $receiver_id);
+            })->orWhere(function($query) use ($user, $receiver_id) {
+                $query->where('sender_id', $receiver_id)
                       ->where('receiver_id', $user->id);
             })
             ->with(['sender', 'receiver'])
@@ -38,7 +41,7 @@ class ChatController extends Controller
             ->get();
         }
 
-        return view('chat.index', compact('messages', 'users', 'selectedUserId'));
+        return view('chat.index', compact('messages', 'users', 'receiver_id'));
     }
 
     public function sendMessage(Request $request)
