@@ -12,30 +12,10 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\MentalHealthController;
-use App\Http\Controllers\MedicalRecordController;
-use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\EPrescriptionController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\Doctor\ProfileController;
 
 // Home
 Route::get('/', function () {
-    try {
-        $articles = \App\Models\Article::latest()->paginate(6);
-        $feedbacks = \App\Models\Feedback::with('user')
-                        ->latest()
-                        ->take(5)
-                        ->get();
-        return view('dashboard', compact('articles', 'feedbacks'));
-    } catch (\Exception $e) {
-        \Log::error('Error loading homepage: ' . $e->getMessage());
-        $articles = collect([]);
-        $feedbacks = collect([]);
-        return view('dashboard', compact('articles', 'feedbacks'));
-    }
+    return view('dashboard');
 })->name('home');
 
 // Routes for Authentication
