@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>{{ __('Detail E-Prescription') }}</span>
+                    <span>{{ __('Detail Resep Digital') }}</span>
                     <a href="{{ route('e-prescriptions.download', $prescription) }}" class="btn btn-primary btn-sm">
                         <i class="fas fa-download"></i> Download PDF
                     </a>
