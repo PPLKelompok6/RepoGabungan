@@ -140,7 +140,7 @@
             </div>
         </div>
 
-        <!-- Card Rekam Medis -->
+        <!-- Rekam Medis Card -->
         <div class="col-md-6">
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex align-items-center">
@@ -155,22 +155,21 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="icon-box bg-primary text-white me-3">
-                            <i class="fas fa-prescription-bottle-alt"></i>
-                        </div>
-                        <h5 class="card-title mb-0">Resep Digital</h5>
+
+        <!-- Resep Digital Card -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="icon-wrapper me-3">
+                        <i class="fas fa-prescription-bottle-alt fa-2x text-primary"></i>
                     </div>
-                    <p class="card-text">Lihat riwayat resep digital Anda</p>
-                    <a href="{{ route('e-prescriptions.history') }}" class="btn btn-primary">
-                        <i class="fas fa-list me-1"></i> Lihat Riwayat
-                    </a>
+                    <div>
+                        <h5 class="card-title mb-1">Resep Digital</h5>
+                        <p class="card-text text-muted mb-2">Lihat riwayat resep digital yang diberikan dokter</p>
+                        <a href="{{ route('e-prescriptions.history') }}" class="btn btn-primary">
+                            <i class="fas fa-list me-1"></i> Lihat Riwayat
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -246,16 +245,6 @@
 .btn-orange:hover {
     background-color: #e96b02;
     color: white;
-}
-
-.icon-box {
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
 }
 </style>
 
