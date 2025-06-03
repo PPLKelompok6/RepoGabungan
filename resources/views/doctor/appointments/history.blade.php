@@ -24,6 +24,7 @@
                                     <th>Pasien</th>
                                     <th>Tanggal & Waktu</th>
                                     <th>Status</th>
+                                    <th>E-Prescription</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -41,6 +42,21 @@
                                         }}">
                                             {{ ucfirst($appointment->status) }}
                                         </span>
+                                    </td>
+                                    <td>
+                                        @if($appointment->prescription)
+                                            <a href="{{ route('e-prescriptions.show', $appointment->prescription) }}" 
+                                               class="btn btn-info btn-sm">
+                                                Lihat Resep
+                                            </a>
+                                        @elseif($appointment->status === 'completed')
+                                            <a href="{{ route('e-prescriptions.create', $appointment) }}" 
+                                               class="btn btn-primary btn-sm">
+                                                Buat Resep
+                                            </a>
+                                        @else
+                                            -
+                                        @endif
                                     </td>
                                     <td>
                                         <a href="{{ route('appointments.show', $appointment) }}" class="btn btn-info btn-sm">

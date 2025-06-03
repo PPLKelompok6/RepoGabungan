@@ -54,20 +54,46 @@
                                     <i class="fas fa-history me-1"></i> Riwayat Janji Temu
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('articles.index') }}">
+                                    <i class="fas fa-newspaper me-1"></i> Article
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('forum.index') }}">
+                                    <i class="fas fa-comments me-1"></i> Forum
+                                </a>
+                            </li>
                         @endif
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
                             </a>
-                        </li>
-                        <!-- Tombol Logout -->
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;">
-                                    <i class="fas fa-sign-out-alt me-1"></i> Logout
-                                </button>
-                            </form>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @if(Auth::user()->role === 'doctor')
+                                    <a class="dropdown-item" href="{{ route('doctor.profile.edit') }}">
+                                        <i class="fas fa-user-edit me-2"></i>{{ __('Edit Profile') }}
+                                    </a>
+                                @else
+                                    <a class="dropdown-item" href="{{ route('user.profile.edit') }}">
+                                        <i class="fas fa-user-edit me-2"></i>{{ __('Edit Profile') }}
+                                    </a>
+                                @endif
+                                
+                                <a class="dropdown-item" href="{{ route('feedback.index') }}">
+                                    <i class="fas fa-star me-2"></i>{{ __('Feedback & Rating') }}
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i>{{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
                         </li>
                     @endguest
                 </ul>

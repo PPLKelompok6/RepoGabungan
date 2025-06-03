@@ -1,0 +1,29 @@
+<?php
+
+namespace Tests\Browser;
+
+use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+class LoginTest extends DuskTestCase
+{
+    use DatabaseMigrations;
+
+    public function test_user_can_view_login_page()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/login')
+                ->assertPathIs('/login')
+                ->assertSee('Login')
+                ->type('email', 'testP@gmail.com')
+                ->type('password', 'password')
+                ->press('Login')
+                ->assertPathIs('/pasien/dashboard');
+
+        });
+    }
+
+    
+}

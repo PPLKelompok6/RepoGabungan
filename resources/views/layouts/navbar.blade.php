@@ -57,6 +57,11 @@
                             <i class="fas fa-comments me-1"></i> Forum
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('articles*') ? 'active' : '' }}" href="{{ route('articles.index') }}">
+                            <i class="fas fa-newspaper me-1"></i> Article
+                        </a>
+                    </li>
                 @endif
             </ul>
             

@@ -13,13 +13,29 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController;
-
-
+use App\Http\Controllers\MentalHealthController;
+use App\Http\Controllers\MedicalRecordController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\EPrescriptionController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\Doctor\ProfileController;
 
 // Home
 Route::get('/', function () {
-    $articles = \App\Models\Article::latest()->paginate(10);
-    return view('dashboard', compact('articles'));
+    try {
+        $articles = \App\Models\Article::latest()->paginate(6);
+        $feedbacks = \App\Models\Feedback::with('user')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+        return view('dashboard', compact('articles', 'feedbacks'));
+    } catch (\Exception $e) {
+        \Log::error('Error loading homepage: ' . $e->getMessage());
+        $articles = collect([]);
+        $feedbacks = collect([]);
+        return view('dashboard', compact('articles', 'feedbacks'));
+    }
 })->name('home');
 
 // Routes for Authentication
@@ -31,6 +47,18 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
+    // User Profile Routes
+    Route::get('/user/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/user/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
+
+    // Feedback Routes (accessible by all authenticated users)
+    Route::resource('feedback', FeedbackController::class)->only([
+        'index', 'store', 'destroy'
+    ])->names([
+        'index' => 'feedback.index',
+        'store' => 'feedback.store',
+        'destroy' => 'feedback.destroy'
+    ]);
 
     // Chat Routes
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
@@ -67,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
         ]);
     });
 
+    
     // Patient (User) Routes
     Route::middleware('role:user')->group(function () {
         Route::get('/pasien/dashboard', function () {
@@ -76,6 +105,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
         Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
         Route::get('/appointments/history', [AppointmentController::class, 'history'])->name('appointments.history');
+        
+        // E-Prescription History Route
+        Route::get('/e-prescriptions/history', [EPrescriptionController::class, 'patientHistory'])->name('e-prescriptions.history');
     });
 
     // Doctor Routes
@@ -84,6 +116,10 @@ Route::middleware(['auth'])->group(function () {
             return view('doctor.dashboard');
         })->name('doctor.dashboard');
 
+        // Doctor Profile Routes
+        Route::get('/doctor/profile/edit', [ProfileController::class, 'edit'])->name('doctor.profile.edit');
+        Route::put('/doctor/profile/update', [ProfileController::class, 'update'])->name('doctor.profile.update');
+
         Route::get('/doctor/schedule', [DoctorScheduleController::class, 'index'])->name('doctor.schedule');
         Route::get('/doctor/schedule/create', [DoctorScheduleController::class, 'create'])->name('doctor.schedule.create');
         Route::post('/doctor/schedule', [DoctorScheduleController::class, 'store'])->name('doctor.schedule.store');
@@ -91,7 +127,16 @@ Route::middleware(['auth'])->group(function () {
         
         // Tambahkan route untuk riwayat janji temu dokter
         Route::get('/doctor/appointments/history', [AppointmentController::class, 'doctorHistory'])->name('doctor.appointments.history');
+
+        // E-Prescription Routes
+        Route::get('/e-prescriptions/create/{appointment}', [EPrescriptionController::class, 'create'])->name('e-prescriptions.create');
+        Route::post('/e-prescriptions/{appointment}', [EPrescriptionController::class, 'store'])->name('e-prescriptions.store');
     });
+
+    // Common Routes for E-Prescription (accessible by doctor and patient)
+    Route::get('/e-prescriptions/{prescription}', [EPrescriptionController::class, 'show'])->name('e-prescriptions.show');
+    Route::get('/e-prescriptions/{prescription}/download', [EPrescriptionController::class, 'download'])->name('e-prescriptions.download');
+    Route::post('/e-prescriptions/{prescription}/update-status', [EPrescriptionController::class, 'updateStatus'])->name('e-prescriptions.update-status');
 
     // Common Appointment Routes (semua user yang login)
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
@@ -99,24 +144,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/health-assessment/calculate', [HealthAssessmentController::class, 'calculate'])->name('health-assessment.calculate');
     Route::get('/health-assessments', [HealthAssessmentController::class, 'index'])->name('health-assessments.index');
     Route::patch('/appointments/{appointment}/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
-}); // Closing bracket for middleware auth group
 
-// Routes untuk admin
-// Hapus atau pindahkan route artikel yang duplikat ini
-// Route::middleware(['auth', 'admin'])->group(function () {
-//     Route::resource('admin/articles', Admin\ArticleController::class)->names('admin.articles');
-// });
-
-// Perbaiki route untuk menampilkan artikel di frontend
-Route::get('/', function () {
-    try {
-        $articles = \App\Models\Article::latest()->paginate(6);
-        return view('dashboard', compact('articles'));
-    } catch (\Exception $e) {
-        $articles = collect([]);
-        return view('dashboard', compact('articles'));
-    }
-})->name('home');
+    // Medical Records Routes
+    Route::get('/medical-records', [MedicalRecordController::class, 'index'])->name('medical-records.index');
+    Route::get('/medical-records/create', [MedicalRecordController::class, 'create'])->name('medical-records.create');
+    Route::post('/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
+    Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
+    Route::get('/medical-records/select-patient', [MedicalRecordController::class, 'selectPatient'])->name('medical-records.select-patient');
+});
 
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
@@ -130,6 +165,29 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
 });
 
-// Hapus duplikasi route berikut karena sudah ada di dalam middleware auth group
-Route::post('/forum/{post}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
-Route::delete('/forum/comment/{comment}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
+// Routes untuk Mental Health Assessment
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mental-health', [MentalHealthController::class, 'index'])->name('mental-health.index');
+    Route::get('/mental-health/history', [MentalHealthController::class, 'history'])->name('mental-health.history');
+    Route::get('/mental-health/test/{type}', [MentalHealthController::class, 'test'])->name('mental-health.test');
+    Route::post('/mental-health/submit-test', [MentalHealthController::class, 'submitTest'])->name('mental-health.submit-test');
+    Route::get('/mental-health/questions/{type}', [MentalHealthController::class, 'questions'])->name('mental-health.questions');
+    Route::post('/mental-health/submit-questions', [MentalHealthController::class, 'submitQuestions'])->name('mental-health.submit-questions');
+    Route::get('/mental-health/result/{type}', [MentalHealthController::class, 'result'])->name('mental-health.result');
+});
+
+// Artikel Routes (accessible without login)
+Route::get('/articles', [App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{article:slug}', [App\Http\Controllers\ArticleController::class, 'show'])->name('articles.show');
+
+// Routes untuk Admin Mental Health
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/mental-health/results', [App\Http\Controllers\Admin\MentalHealthResultController::class, 'index'])
+        ->name('admin.mental-health.results');
+    Route::get('/mental-health/detail/{id}', [App\Http\Controllers\Admin\MentalHealthResultController::class, 'detail'])
+        ->name('admin.mental-health.detail');
+    Route::get('/mental-health/history/{user_id}', [App\Http\Controllers\Admin\MentalHealthResultController::class, 'userHistory'])
+        ->name('admin.mental-health.history');
+    Route::delete('/mental-health/{id}', [App\Http\Controllers\Admin\MentalHealthResultController::class, 'destroy'])
+        ->name('admin.mental-health.destroy');
+});
