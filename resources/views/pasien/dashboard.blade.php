@@ -174,6 +174,31 @@
             </div>
         </div>
     </div>
+
+    <!-- Artikel Kesehatan Section -->
+    @if(isset($articles) && $articles->count() > 0)
+    <div class="row mt-4">
+        <div class="col-12">
+            <h4 class="mb-3">Artikel Kesehatan Terbaru</h4>
+        </div>
+        @foreach($articles as $article)
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                @if($article->image)
+                    <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                @endif
+                <div class="card-body">
+                    <h5 class="card-title">{{ Str::limit($article->title, 50) }}</h5>
+                    <p class="card-text text-muted">{{ Str::limit($article->content, 100) }}</p>
+                    <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-book-reader me-1"></i> Baca Selengkapnya
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
 </div>
 
 <style>

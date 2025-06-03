@@ -663,34 +663,30 @@ document.addEventListener('DOMContentLoaded', function() {
 </style>
 
 <!-- Articles Section -->
-<div class="articles-section py-5">
-    <div class="container">
-        <div class="text-center mb-5">
+@if(isset($articles) && $articles->count() > 0)
+    <div class="row">
+        <div class="col-12">
             <h2>Artikel Kesehatan Terbaru</h2>
             <p class="text-muted">Informasi Kesehatan untuk Anda</p>
         </div>
-        
-        <div class="row">
-            @foreach($articles as $article)
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        @if($article->image)
-                            <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
-                        @endif
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $article->title }}</h5>
-                            <p class="card-text">{{ Str::limit(strip_tags($article->content), 100) }}</p>
-                            <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-primary">Selengkapnya</a>
-                        </div>
-                        <div class="card-footer text-muted">
-                            {{ $article->created_at->diffForHumans() }}
-                        </div>
+    </div>
+    <div class="row">
+        @foreach($articles as $article)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if($article->image)
+                        <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
+                        <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-primary">Baca Selengkapnya</a>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
     </div>
-</div>
+@endif
 
 <style>
 .article-card {

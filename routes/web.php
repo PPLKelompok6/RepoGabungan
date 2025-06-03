@@ -78,7 +78,8 @@ Route::middleware(['auth'])->group(function () {
     // Patient (User) Routes
     Route::middleware('role:user')->group(function () {
         Route::get('/pasien/dashboard', function () {
-            return view('pasien.dashboard');
+            $articles = \App\Models\Article::latest()->take(4)->get();
+            return view('pasien.dashboard', compact('articles'));
         })->name('pasien.dashboard');
 
         Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
