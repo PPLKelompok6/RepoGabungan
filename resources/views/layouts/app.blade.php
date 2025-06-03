@@ -59,15 +59,11 @@
                                     <i class="fas fa-newspaper me-1"></i> Article
                                 </a>
                             </li>
-<<<<<<< Updated upstream
-
-=======
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('forum.index') }}">
                                     <i class="fas fa-comments me-1"></i> Forum
                                 </a>
                             </li>
->>>>>>> Stashed changes
                         @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
