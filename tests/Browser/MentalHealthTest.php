@@ -35,27 +35,21 @@ class MentalHealthTest extends DuskTestCase
                     ->waitFor('.kartu-tes')
                     ->screenshot('3-before-click')
                     ->clickLink('Mulai tes')
-                    // ->waitForLocation('/mental-health/test/burnout')
-                    ->assertPathIs('/mental-health/test/burnout')
-                    // ->pause(3000)
+                    ->pause(3000)
                     ->screenshot('4-after-click')
                     // Mengisi form biodata
-                    // ->waitForText('Tes Psikologi Burnout')
-                    // ->waitFor('#usia', 5)
-                    ->type('usia', 22)
-                    // ->select('gender', 'Laki-laki')
-                    // ->type('input[name=domisili]', 'Jakarta')
-                    // ->type('#pekerjaan', 'Mahasiswa')
-                    ->pause(1000)
+                    ->waitForText('Tes Psikologi Burnout')
+                    ->type('usia', '22')
+                    ->select('gender', 'Laki-laki')
+                    ->type('domisili', 'Bandung')
+                    ->type('pekerjaan', 'Mahasiswa')
                     ->screenshot('5-filled-form')
-                    // ->press('Selanjutnya')
-                    // ->waitForLocation('/mental-health/questions/burnout', 2)
-                    // ->assertPathIs('/mental-health/questions/burnout')
-                    // ->pause(2000)
-                    // ->screenshot('6-after-submit')
-                    // ->click('radio', 'q1_2')
-                    // ->pause(1000)
-                    ->screenshot('testss');
+                    ->press('Selanjutnya')
+                    ->pause(2000)
+                    // Memastikan masih berada di halaman yang sama
+                    ->assertPathIs('/mental-health/test/burnout')
+                    ->assertSee('Tes Psikologi Burnout')
+                    ->screenshot('6-after-submit');
         });
     }
 }

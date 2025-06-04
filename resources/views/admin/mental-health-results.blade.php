@@ -143,7 +143,7 @@
                                               onsubmit="return confirm('Apakah Anda yakin ingin menghapus data tes ini?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
+                                            <button type="submit" class="btn btn-sm btn-danger" dusk="delete-mental-health-result-{{ $test->id }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>

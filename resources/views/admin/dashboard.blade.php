@@ -195,7 +195,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Riwayat Tes Kesehatan Mental</h5>
             <a href="{{ route('admin.mental-health.results') }}" class="btn btn-primary btn-sm">
-                <i class="fas fa-brain"></i> Lihat Semua
+                <i class="fas fa-brain"></i> Lihat Semua Mental
             </a>
         </div>
         <div class="card-body">
